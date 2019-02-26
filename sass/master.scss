@@ -1,0 +1,44 @@
+video {
+  border: 10px solid #ececec;
+  border-radius: 3pc;
+  max-width: 100%;
+}
+
+.pokedex {
+  &:not(:first-child) {
+    padding-left: 2rem;
+  }
+  &:not(:last-child) {
+    padding-right: 2rem;
+  }
+  div[class^="level_"] {
+    &:not(.level_0) {
+      padding-left: 2rem;
+    }
+    &:not(.level_5) {
+      padding-right: 2rem;
+    }
+
+    .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      img {
+        width: 64px;
+
+        &:not(.active) {
+          filter: grayscale(1);
+        }
+
+        &.active {
+          border: 1px solid rgba(0, 255, 0, 1);
+          border-radius: 1pc;
+          margin: 0.1rem;
+          background-color: rgba(0, 200, 0, 0.1);
+        }
+      }
+    }
+  }
+}
