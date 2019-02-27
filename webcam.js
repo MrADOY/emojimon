@@ -27,7 +27,6 @@ $(() => {
 
   // Stream the video.
   function handleSuccess(stream) {
-    console.log(stream.getTracks());
     video.srcObject = stream;
     setTimeout(function () {
       $('.video .cam').show('slow');
@@ -45,7 +44,9 @@ $(() => {
  * Captures a frame from the webcam and convert it to tensor.
  */
 function capture() {
-  return tf.tidy(() => {
-    return tf.browser.fromPixels($('.video .cam video')[0]);
+    $(() => {
+    return tf.tidy(() => {
+      return tf.browser.fromPixels($('.video .cam video')[0]);
+    });
   });
 }
