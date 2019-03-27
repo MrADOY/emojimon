@@ -33,12 +33,7 @@ $(() => {
     setTimeout(function () {
       $('.video .cam').show('slow');
     }, 500);
-    setTimeout(function () {
-      var image = tf.browser.fromPixels($('video')[0]);
-      image.print();
-      console.log($('canvas')[0]);
-      tf.browser.toPixels(image, $('canvas')[0]);
-    }, 1500);
+    return tf.browser.fromPixels($('video')[0]);
   }
 
   // When error
