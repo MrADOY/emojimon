@@ -9,13 +9,15 @@ $(() => {
   $('.video .cam').hide();
   $('.video .error').hide();
   const video = $('.video .cam video')[0];
+
   const constraints = {
+    audio: false,
     video: {
       width: {
-        exact: 640
+        exact: 256
       },
       height: {
-        exact: 480
+        exact: 256
       }
     }
   };
@@ -31,22 +33,18 @@ $(() => {
     setTimeout(function () {
       $('.video .cam').show('slow');
     }, 500);
+    setTimeout(function () {
+      var image = tf.browser.fromPixels($('video')[0]);
+      image.print();
+      console.log($('canvas')[0]);
+      tf.browser.toPixels(image, $('canvas')[0]);
+    }, 1500);
   }
 
   // When error
   function handleError(error) {
+    console.error(error);
     $('.video .error').prepend('<div class="alert alert-danger" role="alert"><strong>Erreur</strong> La caméra est obligatoire. </div>');
     $('.video .error').show('slow');
   }
 });
-
-/**
- * Captures a frame from the webcam and convert it to tensor.
- */
-function capture() {
-    $(() => {
-    return tf.tidy(() => {
-      return tf.browser.fromPixels($('.video .cam video')[0]);
-    });
-  });
-}
