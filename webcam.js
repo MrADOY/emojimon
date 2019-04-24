@@ -1,7 +1,6 @@
 /*
 @authors: Adrien Jablonski, Bryton Lacquement, Nicolas Jourdain
 Marceau Hollertt, Aurelien Pietrzak.
-@doc: https://www.html5rocks.com/en/tutorials/getusermedia/intro/
 */
 
 // When it's load.
