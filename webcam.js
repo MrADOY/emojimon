@@ -5,6 +5,10 @@ Marceau Hollertt, Aurelien Pietrzak.
 
 // When it's load.
 
+const IMAGE_WIDTH = 100;
+const IMAGE_HEIGHT = 100;
+const IMAGE_CHANNELS = 3;
+const outShape = [1, IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_CHANNELS];
 
 $(() => {
   $('.video .cam').hide();
@@ -48,6 +52,7 @@ $(() => {
   // Captures a frame from the webcam and convert it to tensor.
   function capture() {
     return tf.tidy(() => {
-      return tf.browser.fromPixels($('.video .cam video')[0]);
+      let tensor3d = tf.browser.fromPixels($('.video .cam video')[0]);
+      return tf.tensor4d(tensor3d.dataSync(), outShape, "int32");
     });
   }
