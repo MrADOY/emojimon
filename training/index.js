@@ -20,7 +20,7 @@ const BATCH_SIZE = 50;
 const EPOCHS = 100;
 // Our last layer is a dense layer which has 52 output units, one for each
 // output class (i.e. 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ... 52).
-const NUM_OUTPUT_CLASSES = 2;
+const NUM_OUTPUT_CLASSES = 52;
 // Folder of the dataset.
 const rootFolder = './dataset'
 // Pictures of the dataset
@@ -38,6 +38,8 @@ fs.readdirSync(rootFolder).forEach(dirName => {
   if(fs.lstatSync(path.join(rootFolder, dirName)).isDirectory()){
     fs.readdirSync(path.join(rootFolder, dirName)).forEach(picture => {
       if(fs.lstatSync(path.join(rootFolder, dirName, picture)).isFile()){
+	// If lstatsync says it's a file and if it starts with "norm"
+        if(picture.startsWith("norm")){
           labels.push(labelsList.indexOf(dirName));
           // Push a new promise to the array.
           files.push(new Promise((resolve, reject) => {
@@ -48,6 +50,7 @@ fs.readdirSync(rootFolder).forEach(dirName => {
               console.log(error); reject(error);
             });
           }));
+	}
       }
     });
   }

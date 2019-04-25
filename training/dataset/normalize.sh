@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-size="256x256"
+size="100x100"
 
 for dir in $(ls -d */); do
   echo 'Entering' $dir
@@ -12,7 +12,7 @@ for dir in $(ls -d */); do
 
   for file in $(ls *.jpg); do
     echo -e "Normalizing $file... \c"
-    convert $file -resize $size^ -gravity center -extent $size "normalized-$file"
+    convert $file -resize $size\! -gravity center -extent $size "normalized-$file"
     echo "Done."
   done
 
