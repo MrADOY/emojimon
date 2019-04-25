@@ -3,9 +3,12 @@
 Marceau Hollertt, Aurelien Pietrzak.
 */
 
-// TODO Load the model.
-
+// Load the model
 var isPredicting = true;
+async function loadModel(){
+    const model = await tf.loadLayersModel('http://serveurnicoant.ddns.net/emojimon/training/model.json/model.json');
+    model.summary();
+}
 
 // Predict function
 async function predict(){
