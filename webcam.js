@@ -4,6 +4,8 @@ Marceau Hollertt, Aurelien Pietrzak.
 */
 
 // When it's load.
+
+
 $(() => {
   $('.video .cam').hide();
   $('.video .error').hide();
@@ -42,3 +44,10 @@ $(() => {
     $('.video .error').show('slow');
   }
 });
+
+  // Captures a frame from the webcam and convert it to tensor.
+  function capture() {
+    return tf.tidy(() => {
+      return tf.browser.fromPixels($('.video .cam video')[0]);
+    });
+  }
