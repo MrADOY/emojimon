@@ -3,7 +3,9 @@ import json
 from google_images_download import google_images_download
 
 requests = {
-    'keyboard': ('keyboard', 'gaming keyboard', 'computer keyboard')
+    'computer-keyboard': ('keyboard', 'gaming keyboard', 'computer keyboard'),
+    'computer-mouse': ('computer mouse', 'gaming mouse', 'mouse laptop'),
+    'computer-monitor': ('monitor', 'computer monitor', 'computer monitor reviews'),
 }
 
 for dir, keywords in requests.items():
