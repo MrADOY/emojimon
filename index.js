@@ -8,55 +8,17 @@ var isLoaded = false;
 var labels = [
   "backpack",
   "beer-mug",
-  "bonsai",
-  "butterfly",
-  "cake",
+  "book",
+  "bottle",
   "calculator",
-  "cd",
+  "chair",
   "coffee-mug",
-  "coin",
   "computer-keyboard",
   "computer-monitor",
   "computer-mouse",
-  "diamond-ring",
-  "dice",
-  "dog",
-  "duck",
-  "dumb-bell",
-  "eiffel-tower",
-  "electric-guitar",
-  "elephant",
-  "eyeglasses",
-  "faces",
-  "fire-extinguisher",
-  "flower",
-  "fried-egg",
-  "frying-pan",
-  "goat",
-  "grand-piano",
-  "guitar-pick",
-  "hamburger",
-  "homer-simpson",
-  "knife",
-  "laptop",
-  "lightbulb",
-  "microwave",
-  "mountain-bike",
-  "paperclip",
-  "penguin",
   "people",
-  "playing-card",
-  "rainbow",
-  "revolver",
-  "sheet-music",
-  "sneaker",
-  "soccer-ball",
-  "spaghetti",
-  "spider",
-  "spoon",
-  "t-shirt",
-  "tomato",
-  "video-projector",
+  "smartphone",
+  "table",
   "watch"
 ];
 
@@ -73,8 +35,9 @@ async function predict(){
       tf.tidy(() => {
         // Capture the frame from the webcam.
         const img = capture();
-        // Predict 
+        // Predict
         let results = model.predict(img);
+        // Find the best probability
         let i = results.dataSync().indexOf(Math.max(...results.dataSync()));
         // Display the resutls
         $('#result').html('<p>' + labels[i] + '</p>');

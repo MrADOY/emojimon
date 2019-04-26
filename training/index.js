@@ -10,17 +10,17 @@ const sharp = require("sharp");
 const lab = require('./label.json');
 const labelsList = lab.labels;
 // Size of pictures
-const IMAGE_WIDTH = 100;
-const IMAGE_HEIGHT = 100;
+const IMAGE_WIDTH = 256;
+const IMAGE_HEIGHT = 256;
 // Corresponding to RGB values.
 const IMAGE_CHANNELS = 3;
 // Size of the batch
 const BATCH_SIZE = 50;
 // Number of epochs.
-const EPOCHS = 100;
-// Our last layer is a dense layer which has 52 output units, one for each
-// output class (i.e. 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ... 52).
-const NUM_OUTPUT_CLASSES = 52;
+const EPOCHS = 30;
+// Our last layer is a dense layer which has 14 output units, one for each
+// output class (i.e. 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ... 14).
+const NUM_OUTPUT_CLASSES = 14;
 // Folder of the dataset.
 const rootFolder = './dataset'
 // Pictures of the dataset
