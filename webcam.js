@@ -3,8 +3,8 @@
 Marceau Hollertt, Aurelien Pietrzak.
 */
 
-const IMAGE_WIDTH = 100;
-const IMAGE_HEIGHT = 100;
+const IMAGE_WIDTH = 256;
+const IMAGE_HEIGHT = 256;
 const IMAGE_CHANNELS = 3;
 const outShape = [1, IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_CHANNELS];
 
