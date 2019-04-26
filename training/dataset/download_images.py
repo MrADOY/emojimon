@@ -1,4 +1,5 @@
 import os
+import json
 from google_images_download import google_images_download
 
 requests = {
@@ -23,3 +24,8 @@ for dir, keywords in requests.items():
     for i, file in enumerate(os.listdir(path)):
         os.rename(os.path.join(path, file),
                   os.path.join(path, str(i) + '.jpg'))
+
+# Save labels to json format
+with open(os.path.join('..', 'label.json'), 'w') as f:
+    d = {'labels': list(requests.keys())}
+    f.write(json.dumps(d, indent=2, separators=(',', ': ')))
