@@ -1,89 +1,105 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
-  <head>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.15.3/dist/tf.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="pokedex.js"></script>
-    <script type="text/javascript" src="webcam.js"></script>
-    <script type="text/javascript" src="index.js"></script>
+<head>
+  <script src="https://rawgit.com/allensarkisyan/VideoFrame/master/VideoFrame.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.15.3/dist/tf.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="pokedex.js"></script>
+  <script type="text/javascript" src="webcam.js"></script>
+  <script type="text/javascript" src="index.js"></script>
 
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/master.css">
-    <meta charset="utf-8">
-    <title>Emojimon</title>
-  </head>
-  <body>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
-          <div class="title text-center">
-            <h1>Emojimon</h1>
-          </div>
-        </div>
-      </div>
-      <div class="row pt-3">
-        <div class="col-12">
-          <div class="video text-center">
-            <div class="error">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+  <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 
-            </div>
-            <div class="cam">
-              <h2>Votre caméra</h2>
-              <video autoplay height="100" width="100"></video>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="result">
-      </div>
-      <div class="row pt-3">
-        <div class="col-12 text-center">
-          <h2>Votre emojidex</h2>
-          <div class="pokedex row">
-            <div class="col-xl-2 col-lg-2 col-md-6">
-              <h3>Démonstration</h3>
-              <div class="level_0 row">
-
-              </div>
-            </div>
-            <div class="col-xl-2 col-lg-2 col-md-6">
-              <h3>Niveau 1</h3>
-              <div class="level_1 row">
-
-              </div>
-            </div>
-            <div class="col-xl-2 col-lg-2 col-md-6">
-              <h3>Niveau 2</h3>
-              <div class="level_2 row">
-
-              </div>
-            </div>
-            <div class="col-xl-2 col-lg-2 col-md-6">
-              <h3>Niveau 3</h3>
-              <div class="level_3 row">
-
-              </div>
-            </div>
-            <div class="col-xl-2 col-lg-2 col-md-6">
-              <h3>Niveau 4</h3>
-              <div class="level_4 row">
-
-              </div>
-            </div>
-            <div class="col-xl-2 col-lg-2 col-md-6">
-              <h3>Niveau 5</h3>
-              <div class="level_5 row">
-
-              </div>
-            </div>
-          </div>
+  <link rel="stylesheet" href="css/master.css">
+  <meta charset="utf-8">
+  <title>Emojimon</title>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="title text-center">
+          <h1>Emojimon</h1>
         </div>
       </div>
     </div>
-  </body>
-  <script type="text/javascript">
-    predict();
-  </script>
+    <div class="row pt-3">
+      <div class="col-12">
+        <div class="loading">
+          <span>Chargement en cours...</span>
+          <div class="bar">
+            <progress class="nes-progress is-primary" value="0" max="100"></progress>
+          </div>
+        </div>
+        <div class="video text-center">
+          <div class="error">
+
+          </div>
+          <div class="cam">
+            <h2>Votre caméra</h2>
+            <canvas id="canvas" width="300" height="300"></canvas>
+            <video autoplay height="256" width="256"></video>
+          </div>
+          <div class="cam_hidden">
+            <h2>Votre caméra</h2>
+            <video autoplay height="100" width="100"></video>
+          </div>
+          <div id="result" class="nes-text is-error"></div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row pt-3">
+    <div class="col-12 text-center">
+    <h2>Votre emojidex</h2>
+    <div class="pokedex row">
+    <div class="col-xl-2 col-lg-2 col-md-6">
+    <h3>Démonstration</h3>
+    <div class="level_0 row">
+
+  </div>
+</div>
+<div class="col-xl-2 col-lg-2 col-md-6">
+<h3>Niveau 1</h3>
+<div class="level_1 row">
+
+</div>
+</div>
+<div class="col-xl-2 col-lg-2 col-md-6">
+<h3>Niveau 2</h3>
+<div class="level_2 row">
+
+</div>
+</div>
+<div class="col-xl-2 col-lg-2 col-md-6">
+<h3>Niveau 3</h3>
+<div class="level_3 row">
+
+</div>
+</div>
+<div class="col-xl-2 col-lg-2 col-md-6">
+<h3>Niveau 4</h3>
+<div class="level_4 row">
+
+</div>
+</div>
+<div class="col-xl-2 col-lg-2 col-md-6">
+<h3>Niveau 5</h3>
+<div class="level_5 row">
+
+</div>
+</div>
+</div>
+</div>
+</div> -->
+</div>
+</body>
+<script type="text/javascript">
+predict();
+</script>
 </html>

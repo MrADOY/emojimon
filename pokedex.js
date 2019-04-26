@@ -518,29 +518,29 @@ const EMOJIS_LVL_DEMO = [
     'path': '/img/emojis/game/jack o lantern.svg'
   }
 ];
-$(() => {
-  $.each(EMOJIS_LVL_DEMO, function(index, val) {
-    var path = val.path.substring(1, val.path.length);
-    $('.pokedex .level_0').append('<div class="col-4 item"><img src="'+path+'"><br><span>'+val.name+'</span></div>');
-  });
-  $.each(EMOJIS_LVL_1, function(index, val) {
-    var path = val.path.substring(1, val.path.length);
-    $('.pokedex .level_1').append('<div class="col-4 item"><img src="'+path+'"><br><span>'+val.name+'</span></div>');
-  });
-  $.each(EMOJIS_LVL_2, function(index, val) {
-    var path = val.path.substring(1, val.path.length);
-    $('.pokedex .level_2').append('<div class="col-4 item"><img src="'+path+'"><br><span>'+val.name+'</span></div>');
-  });
-  $.each(EMOJIS_LVL_3, function(index, val) {
-    var path = val.path.substring(1, val.path.length);
-    $('.pokedex .level_3').append('<div class="col-4 item"><img src="'+path+'"><br><span>'+val.name+'</span></div>');
-  });
-  $.each(EMOJIS_LVL_4, function(index, val) {
-    var path = val.path.substring(1, val.path.length);
-    $('.pokedex .level_4').append('<div class="col-4 item"><img src="'+path+'"><br><span>'+val.name+'</span></div>');
-  });
-  $.each(EMOJIS_LVL_5, function(index, val) {
-    var path = val.path.substring(1, val.path.length);
-    $('.pokedex .level_5').append('<div class="col-4 item"><img src="'+path+'"><br><span>'+val.name+'</span></div>');
-  });
-});
+// $(() => {
+//   $.each(EMOJIS_LVL_DEMO, function(index, val) {
+//     var path = val.path.substring(1, val.path.length);
+//     $('.pokedex .level_0').append('<div class="col-4 item"><img src="'+path+'"><br><span>'+val.name+'</span></div>');
+//   });
+//   $.each(EMOJIS_LVL_1, function(index, val) {
+//     var path = val.path.substring(1, val.path.length);
+//     $('.pokedex .level_1').append('<div class="col-4 item"><img src="'+path+'"><br><span>'+val.name+'</span></div>');
+//   });
+//   $.each(EMOJIS_LVL_2, function(index, val) {
+//     var path = val.path.substring(1, val.path.length);
+//     $('.pokedex .level_2').append('<div class="col-4 item"><img src="'+path+'"><br><span>'+val.name+'</span></div>');
+//   });
+//   $.each(EMOJIS_LVL_3, function(index, val) {
+//     var path = val.path.substring(1, val.path.length);
+//     $('.pokedex .level_3').append('<div class="col-4 item"><img src="'+path+'"><br><span>'+val.name+'</span></div>');
+//   });
+//   $.each(EMOJIS_LVL_4, function(index, val) {
+//     var path = val.path.substring(1, val.path.length);
+//     $('.pokedex .level_4').append('<div class="col-4 item"><img src="'+path+'"><br><span>'+val.name+'</span></div>');
+//   });
+//   $.each(EMOJIS_LVL_5, function(index, val) {
+//     var path = val.path.substring(1, val.path.length);
+//     $('.pokedex .level_5').append('<div class="col-4 item"><img src="'+path+'"><br><span>'+val.name+'</span></div>');
+//   });
+// });
