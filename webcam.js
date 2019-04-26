@@ -10,107 +10,56 @@ const IMAGE_HEIGHT = 100;
 const IMAGE_CHANNELS = 3;
 const outShape = [1, IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_CHANNELS];
 
-var rotation = 0,
-loopFrame,
-centerX,
-centerY;
-
 $(() => {
-  $('.video .cam_hidden').hide();
+  $('.video .cam').hide();
   $('.video .error').hide();
-
-  var canvas = $('#canvas')[0];
-  var ctx = $('#canvas')[0].getContext('2d');
   const video = $('.video .cam video')[0];
-  const video_hidden = $('.video .cam_hidden video')[0];
 
   const constraints = {
     audio: false,
     video: {
-      width: 256,
-      height: 256,
-      facingMode: "environment"
+      width: {
+        exact: 256
+      },
+      height: {
+        exact: 256
+      }
     }
   };
 
-  video_hidden.addEventListener('loadedmetadata',function(){
-    width = canvas.width = video_hidden.videoWidth;
-    height = canvas.height = video_hidden.videoHeight;
-    centerX = width / 2;
-    centerY = height / 2;
-    startLoop();
-  });
-
   // Get access to webcam
-  navigator.getUserMedia = ( navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia ||
-    navigator.msGetUserMedia);
+  navigator.mediaDevices.getUserMedia(constraints)
+  .then(handleSuccess)
+  .catch(handleError);
 
-    if (navigator.getUserMedia) {
-      navigator.getUserMedia(constraints,handleSuccess,handleError);
-    }
+  // Stream the video.
+  function handleSuccess(stream) {
+    video.srcObject = stream;
+    setTimeout(function () {
+      $('.video .cam').show('slow');
+    }, 500);
+    return tf.browser.fromPixels($('video')[0]);
+  }
 
-    // Stream the video.
-    function handleSuccess(stream) {
-      video.srcObject = stream;
-      video_hidden.srcObject = stream;
-    }
-
-    // When error
-    function handleError(error) {
-      console.error(error);
-      $('.video .error').prepend('<div class="alert alert-danger" role="alert"><strong>Erreur</strong> La caméra est obligatoire. </div>');
-      $('.video .error').show('slow');
-    }
-
-    function loop(){
-      loopFrame = requestAnimationFrame(loop);
-
-      //ctx.clearRect(0, 0, width, height);
-
-      // ctx.globalAlpha = 0.005;
-      // ctx.fillStyle = "#FFF";
-      // ctx.fillRect(0, 0, width, height);
-
-      ctx.save();
-
-      // ctx.beginPath();
-      // ctx.arc( centerX, centerY, 140, 0, twoPI , false);
-      // //ctx.rect(0, 0, width/2, height/2);
-      // ctx.closePath();
-      // ctx.clip();
-
-      //ctx.fillStyle = "#FFF";
-      //ctx.fillRect(0, 0, width, height);
-
-      // ctx.translate( centerX, centerY );
-      // rotation += 0.005;
-      // rotation = rotation > 360 ? 0 : rotation;
-      // ctx.rotate(rotation);
-      // ctx.translate( -centerX, -centerY );
-
-      // ctx.globalAlpha = 0.1;
-      draw(video_hidden, canvas, ctx, 30);
-
-      ctx.restore();
-
-    }
-
-    function draw(video, canvas, context, frameRate) {
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-      setTimeout(draw, 1/frameRate, video, canvas, context, frameRate);
-    }
-
-    function startLoop(){
-      loopFrame = loopFrame || requestAnimationFrame(loop);
-    }
-  });
+  // When error
+  function handleError(error) {
+    console.error(error);
+    $('.video .error').prepend('<div class="alert alert-danger" role="alert"><strong>Erreur</strong> La caméra est obligatoire. </div>');
+    $('.video .error').show('slow');
+  }
+});
 
   // Captures a frame from the webcam and convert it to tensor.
   function capture() {
     return tf.tidy(() => {
-      let tensor3d = tf.browser.fromPixels($('.video .cam_hidden video')[0]);
-      return tf.tensor4d(tensor3d.dataSync(), outShape, "int32");
+      //Crop the image to have a 100x100 square which is the center of the camera
+      let tensor3d = tf.browser.fromPixels($('.video .cam video')[0]);
+      let center_height = tensor3d.shape[0]/2;
+      let begin_height = center_height - (IMAGE_HEIGHT/2);
+      let center_width = tensor3d.shape[1]/2;
+      let begin_width = center_width - (IMAGE_WIDTH/2);
+      let tensor3d_cropped = tensor3d.slice([begin_height, begin_width, 0], [IMAGE_HEIGHT, IMAGE_WIDTH, 3]);
+
+      return tf.tensor4d(tensor3d_cropped.dataSync(), outShape, "int32");
     });
   }
