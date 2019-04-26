@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-size="100x100"
+size="256x256"
 
 for dir in $(ls -d */); do
   echo 'Entering' $dir
