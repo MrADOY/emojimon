@@ -1,36 +1,51 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
-  <script src="https://rawgit.com/allensarkisyan/VideoFrame/master/VideoFrame.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <!-- <script src="https://rawgit.com/allensarkisyan/VideoFrame/master/VideoFrame.min.js"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.15.3/dist/tf.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="js/DetectRTC.min.js"></script>
+  <script src="js/adapter.min.js"></script>
+  <script src="js/screenfull.min.js"></script>
+  <script src="js/howler.core.min.js"></script>
+  <script src="js/main.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script type="text/javascript" src="pokedex.js"></script>
   <script type="text/javascript" src="webcam.js"></script>
   <script type="text/javascript" src="index.js"></script>
 
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
   <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 
   <link rel="stylesheet" href="css/master.css">
+  <link rel="stylesheet" href="css/style.css">
   <meta charset="utf-8">
   <title>Emojimon</title>
 </head>
 <body>
+  <div id="container">
+    <div id="gui_controls">
+      <button id="switchCameraButton" name="switch Camera" type="button" aria-pressed="false"></button>
+      <button id="takePhotoButton" name="take Photo" type="button"></button>
+      <button id="toggleFullScreenButton" name="toggle FullScreen" type="button" aria-pressed="false"></button>
+    </div>
+  </div>
   <div class="container-fluid">
-    <div class="row">
+    <div class="row mt-3 mb-3">
       <div class="col-12">
         <div class="title text-center">
           <h1>Emojimon</h1>
         </div>
       </div>
     </div>
-    <div class="row pt-3">
-      <div class="col-12">
+    <div class="row">
+      <div class="col-md-12">
         <div class="loading">
           <span>Chargement en cours...</span>
           <div class="bar">
@@ -41,16 +56,20 @@
           <div class="error">
 
           </div>
-          <div class="cam">
-            <div class="row justify-content-center">
-              <div class="col-md-6 col-sm-12 align-self-center">
-                <canvas id="canvas" width="100%" height="300"></canvas>
-                <video autoplay height="256" width="256"></video>
+          <div class="row justify-content-center align-items-center">
+            <div class="col-sm-12 col-lg-8 mb-lg-3 mt-3">
+              <div class="cam nes-container is-rounded">
+                <video id="video" autoplay playsinline width="256" height="256"></video>
+                <canvas id="video_overlay"></canvas>
               </div>
             </div>
-          </div>
-          <div class="cam_hidden">
-            <video autoplay height="100" width="100"></video>
+            <div class="col-sm-12 col-lg-4 mb-3 mt-3">
+              <div class="point">
+                <span class="d-flex justify-content-center align-items-center">
+                  <i class="nes-icon coin is-large"></i> x 5
+                </span>
+              </div>
+            </div>
           </div>
           <div id="search" class="nes-container is-rounded"></div>
           <div id="result" class="nes-text is-error"></div>
@@ -60,6 +79,6 @@
   </div>
 </body>
 <script type="text/javascript">
-predict();
+window.camLoaded = false;
 </script>
 </html>
