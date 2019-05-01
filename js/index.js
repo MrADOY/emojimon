@@ -6,15 +6,17 @@ Marceau Hollertt, Aurelien Pietrzak.
 window.isPredicting = false;
 var isLoaded = false;
 var camLoaded = false;
-var init = false;
-var success = false;
-var to_find, found;
-var nb_found = 0;
+var init = fail = success = false;
+var toFind, found;
 var model;
+var maxTime = 20;
+var gameTimer, domUpdate, secondStarted;
 
 var soundSuccess = new Howl({ src: ['sounds/success.mp3'] });
+var soundFail = new Howl({ src: ['sounds/player_down.wav'] });
 
-var response_success = [
+
+var responseSuccess = [
   "Oh ! You found a ",
   "Oh yes, it's a "
 ];
@@ -25,11 +27,11 @@ var response = [
   "Maybe it's a "
 ];
 
-var response_success_fr = [
+var responseSuccessFr = [
   "Oh ! Tu as trouvé ",
   "Oui ! C'est bien "
 ];
-var response_fr = [
+var responseFr = [
   "Oh ! Je vois ",
   "Hum, je pense que c'est ",
   "Je suis presque sur que c'est ",
@@ -53,7 +55,7 @@ var labels = [
   "watch"
 ];
 
-var labels_fr = [
+var labelsFr = [
   "un sac à dos",
   "un verre de bière",
   "un livre",
@@ -70,33 +72,81 @@ var labels_fr = [
   "une montre"
 ];
 
+
+function launchTimer() {
+  secondStarted = $.now();
+  gameTimer = setInterval(function () {
+    secondStarted = $.now();
+    fail = true;
+  }, maxTime*1000);
+  domUpdate = setInterval(function () {
+    updateDOM();
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(gameTimer);
+  clearInterval(domUpdate);
+}
+
+function updateDOM() {
+  $('#nbPoints').html(window.nbPoints);
+  if (window.isPredicting) {    
+    $("#timeLeft").html(Math.trunc(maxTime - (($.now()/1000) - (secondStarted/1000))));
+  }
+}
+
+function restartGame() {
+  setToFind();
+  window.isPredicting = true;
+  predict();
+  launchTimer();
+}
+
+function setToFind(id=null) {
+  if (id) {
+    toFind = labelsFr[id];
+  }
+  else {
+    toFind = labelsFr[Math.floor(Math.random()*labelsFr.length)];
+  }
+  $('#search').html('<p>Tu dois trouver : '+ toFind + '</p>');
+}
+
 function game(img) {
-  if (found == to_find) {
-    $('#result').html('<p class="nes-text is-success">'+ response_success_fr[Math.floor(Math.random()*response_success_fr.length)] + found + '</p>');
-    soundSuccess.play();
+  if (found == toFind) {
     success = true;
-    screenshot();
   }
   else {
     if (!success) {
-      $('#result').html('<p>'+ response_fr[Math.floor(Math.random()*response_fr.length)] + found + '</p>');
+      $('#result').html('<p>'+ responseFr[Math.floor(Math.random()*responseFr.length)] + found + '</p>');
     }
   }
   if (!init) {
-    // to_find = labels_fr[Math.floor(Math.random()*labels_fr.length)];
-    to_find = labels_fr[11];
-    $('#search').html('<p>Tu dois trouver : '+ to_find + '</p>');
+    // toFind = labelsFr[Math.floor(Math.random()*labelsFr.length)];
+    setToFind(11);
     init = true;
   }
   if (success) {
+    stopTimer();
     window.isPredicting = false;
+    window.nbPoints++;
+    $('#result').html('<p class="nes-text is-success">'+ responseSuccessFr[Math.floor(Math.random()*responseSuccessFr.length)] + found + '</p>');
+    soundSuccess.play();
+    screenshot();
+    updateDOM();
     var successTimeout = setTimeout(() => {
-      nb_found++;
-      to_find = labels_fr[Math.floor(Math.random()*labels_fr.length)];
-      $('#search').html('<p>Tu dois trouver : '+ to_find + '</p>');
       success = false;
-      window.isPredicting = true;
-      predict();
+      restartGame();
+    }, 5000);
+  }
+  if (fail) {
+    soundFail.play();
+    stopTimer();
+    window.isPredicting = false;
+    var failTimeout = setTimeout(() => {
+      fail = false;
+      restartGame();
     }, 5000);
   }
 }
@@ -128,6 +178,7 @@ async function predict(){
       $('.video').show("fold", 'slow');
       $('#result').show();
     }, 2000);
+    launchTimer();
   }
 
   while (window.isPredicting && isLoaded && window.camLoaded) {
@@ -136,7 +187,7 @@ async function predict(){
     // Predict
     let results = model.predict(img);
     let i = results.dataSync().indexOf(Math.max(...results.dataSync()));
-    found = labels_fr[i];
+    found = labelsFr[i];
     // console.log(results.dataSync());
     // Display the resutls
     if (!success) {

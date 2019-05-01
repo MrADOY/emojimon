@@ -121,15 +121,15 @@ function initCameraUI() {
         else                   angle = window.orientation;
 
         var guiControls = document.getElementById("gui_controls").classList;
-        var vidContainer = document.getElementById("vid_container").classList;
+        // var vidContainer = document.getElementById("vid_container").classList;
 
         if(angle == 270 || angle == -90) {
             guiControls.add('left');
-            vidContainer.add('left');
+            // vidContainer.add('left');
         }
         else {
             if ( guiControls.contains('left') ) guiControls.remove('left');
-            if ( vidContainer.contains('left') ) vidContainer.remove('left');
+            // if ( vidContainer.contains('left') ) vidContainer.remove('left');
         }
 
         //0   portrait-primary
