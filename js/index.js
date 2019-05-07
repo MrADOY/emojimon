@@ -12,7 +12,7 @@ var model;
 var maxTime = 20;
 var gameTimer, domUpdate, secondStarted;
 
-var soundSuccess = new Howl({ src: ['sounds/success.mp3'] });
+var soundSuccess = new Howl({ src: ['sounds/mariachi.mp3'] });
 var soundFail = new Howl({ src: ['sounds/player_down.wav'] });
 
 
@@ -72,6 +72,19 @@ var labelsFr = [
   "une montre"
 ];
 
+function say(message) {
+  var msg = new SpeechSynthesisUtterance(); //Create the vocal message object
+  var voices = window.speechSynthesis.getVoices();  //Get the available voices (depends of the navigator)
+  console.log(voices);
+  msg.voice = voices[8]; //Choose a voice (10 = firefox/8 = chrome)
+  msg.voiceURI = "native";
+  msg.volume = 1; 
+  msg.rate = 1; //speed of reading
+  msg.pitch = 0.8;
+  msg.text = 'Tu dois trouver ' + message; //Message(text) to read
+  msg.lang = 'fr-FR';
+  speechSynthesis.speak(msg);
+}
 
 function launchTimer() {
   secondStarted = $.now();
@@ -110,6 +123,7 @@ function setToFind(id=null) {
   else {
     toFind = labelsFr[Math.floor(Math.random()*labelsFr.length)];
   }
+  say(toFind);
   $('#search').html('<p>Tu dois trouver : '+ toFind + '</p>');
 }
 
