@@ -6,6 +6,7 @@ Marceau Hollertt, Aurelien Pietrzak.
 window.isPredicting = false;
 var isLoaded = false;
 var camLoaded = false;
+var soundIsPlaying = false;
 var init = fail = success = false;
 var toFind, found;
 var model;
@@ -14,7 +15,16 @@ var gameTimer, domUpdate, secondStarted;
 
 var soundSuccess = new Howl({ src: ['sounds/mariachi.mp3'] });
 var soundFail = new Howl({ src: ['sounds/player_down.wav'] });
-
+soundSuccess.on('end', function(){
+  soundIsPlaying = false;
+}).on('play', function(){
+  soundIsPlaying = true;
+});
+soundFail.on('end', function(){
+  soundIsPlaying = false;
+}).on('play', function(){
+  soundIsPlaying = true;
+});
 
 var responseSuccess = [
   "Oh ! You found a ",
@@ -75,13 +85,13 @@ var labelsFr = [
 function say(message) {
   var msg = new SpeechSynthesisUtterance(); //Create the vocal message object
   var voices = window.speechSynthesis.getVoices();  //Get the available voices (depends of the navigator)
-  console.log(voices);
+  // console.log(voices);
   msg.voice = voices[8]; //Choose a voice (10 = firefox/8 = chrome)
   msg.voiceURI = "native";
-  msg.volume = 1; 
+  msg.volume = 1;
   msg.rate = 1; //speed of reading
   msg.pitch = 0.8;
-  msg.text = 'Tu dois trouver ' + message; //Message(text) to read
+  msg.text = message; //Message(text) to read
   msg.lang = 'fr-FR';
   speechSynthesis.speak(msg);
 }
@@ -104,7 +114,7 @@ function stopTimer() {
 
 function updateDOM() {
   $('#nbPoints').html(window.nbPoints);
-  if (window.isPredicting) {    
+  if (window.isPredicting) {
     $("#timeLeft").html(Math.trunc(maxTime - (($.now()/1000) - (secondStarted/1000))));
   }
 }
@@ -123,7 +133,8 @@ function setToFind(id=null) {
   else {
     toFind = labelsFr[Math.floor(Math.random()*labelsFr.length)];
   }
-  say(toFind);
+  speechSynthesis.cancel();
+  say('Tu dois trouver '+ toFind);
   $('#search').html('<p>Tu dois trouver : '+ toFind + '</p>');
 }
 
@@ -133,7 +144,11 @@ function game(img) {
   }
   else {
     if (!success) {
-      $('#result').html('<p>'+ responseFr[Math.floor(Math.random()*responseFr.length)] + found + '</p>');
+      var rep = responseFr[Math.floor(Math.random()*responseFr.length)];
+      if (!speechSynthesis.speaking) {
+        say(rep + ' ' + found);
+      }
+      $('#result').html('<p>'+ rep + found + '</p>');
     }
   }
   if (!init) {
@@ -146,13 +161,22 @@ function game(img) {
     window.isPredicting = false;
     window.nbPoints++;
     $('#result').html('<p class="nes-text is-success">'+ responseSuccessFr[Math.floor(Math.random()*responseSuccessFr.length)] + found + '</p>');
-    soundSuccess.play();
+    if (!soundIsPlaying) {
+      soundSuccess.play();
+    }
+    else {
+      soundSuccess.stop();
+      soundSuccess.play();
+    }
     screenshot();
     updateDOM();
     var successTimeout = setTimeout(() => {
       success = false;
+      if (soundIsPlaying) {
+        soundSuccess.fade(1.0, 0.0, 500);
+      }
       restartGame();
-    }, 5000);
+    }, 6000);
   }
   if (fail) {
     soundFail.play();
@@ -210,7 +234,7 @@ async function predict(){
     img.dispose();
     results.dispose();
     await tf.nextFrame();
-    await timeout(100);
+    await timeout(1000);
   }
 }
 
